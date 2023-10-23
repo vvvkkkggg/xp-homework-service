@@ -149,7 +149,7 @@ func (s *Application) Task(ctx context.Context, userID int, taskID int) (*templa
 		return nil, nil, err
 	}
 
-	taskDir := "/Users/r.gostilo/Projects/hse/se/xp-homework-service/internal/templates/task.html"
+	taskDir := "internal/templates/task.html"
 	tmpl := template.Must(template.ParseFiles(taskDir))
 
 	return tmpl, &model.AssignmentPage{
