@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"os"
 	"strconv"
 	"strings"
 
@@ -29,20 +30,18 @@ func NewPool(ctx context.Context) (*pgxpool.Pool, error) {
 
 func getConnectionString() string {
 	var builder strings.Builder
-
 	builder.WriteString("sslmode=disable")
 	builder.WriteString(" dbname=")
-	builder.WriteString("admin")
+	builder.WriteString(os.Getenv("DBNAME"))
 	builder.WriteString(" user=")
-	builder.WriteString("admin")
+	builder.WriteString(os.Getenv("USER"))
 	builder.WriteString(" password=")
-	builder.WriteString("admin")
+	builder.WriteString(os.Getenv("PASSWORD"))
 	builder.WriteString(" host=")
-	builder.WriteString("51.250.105.228")
+	builder.WriteString(os.Getenv("HOST"))
 	builder.WriteString(" port=")
-	builder.WriteString(strconv.Itoa(5432))
+	builder.WriteString(os.Getenv("PORT"))
 	builder.WriteString(" connect_timeout=")
 	builder.WriteString(strconv.FormatUint(10, 10))
-
 	return builder.String()
 }

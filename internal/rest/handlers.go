@@ -59,13 +59,13 @@ func (h *Handler) task(ctx *gin.Context) {
 	if err != nil {
 		log.Print("incorrect id")
 	}
-	tmpl, task, err := h.app.Task(ctx.Request.Context(), userIDInt, taskIDInt)
+	tmpl, home, err := h.app.Task(ctx.Request.Context(), userIDInt, taskIDInt)
 	if err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		return
 	}
 
-	err = tmpl.Execute(ctx.Writer, *task)
+	err = tmpl.Execute(ctx.Writer, *home)
 	if err != nil {
 		log.Println("unable to render page")
 		log.Println(err.Error())
@@ -75,24 +75,6 @@ func (h *Handler) task(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
+// todo: submit
 //func (h *Handler) submit(ctx *gin.Context) {
-//
-//	userID := ctx.Param("user")
-//	taskID := ctx.Param("task")
-//	var req model.ImagineRequest
-//
-//	if err := ctx.ShouldBindJSON(&req); err != nil {
-//		ctx.Error(err)
-//		ctx.Status(http.StatusBadRequest)
-//		return
-//	}
-//
-//	if err != nil {
-//		h.logger.Error("unable to process request", zap.Error(err))
-//		ctx.Error(err)
-//		ctx.Status(http.StatusInternalServerError)
-//		return
-//	}
-//
-//	ctx.JSON(http.StatusOK, resp)
 //}
