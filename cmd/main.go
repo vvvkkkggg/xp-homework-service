@@ -1,24 +1,26 @@
 package cmd
 
 import (
+	"context"
 	"database/sql"
-	"flag"
 	"log"
+
+	"github.com/vvvkkkggg/xp-homework-service/internal/application"
+	"github.com/vvvkkkggg/xp-homework-service/internal/db"
+	"github.com/vvvkkkggg/xp-homework-service/internal/rest"
 )
 
 func main() {
-	_ = flag.String("addr", ":4000", "HTTP network address")
-	_ = flag.Bool("debug", false, "Debug mode")
-
-	dsn := flag.String("dsn", "admin:epicepic8@/snippetbox?parseTime=true", "My Postgres")
-
-	flag.Parse()
-
-	db, err := openDB(*dsn)
+	ctx, _ := context.WithCancel(context.Background())
+	pool, err := db.NewPool(ctx)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("cant connect to db")
 	}
-	defer db.Close()
+	defer pool.Close()
+	app := application.New(pool)
+
+	router := rest.NewRouter(rest.NewHandler(app))
+
 }
 
 func openDB(dsn string) (*sql.DB, error) {

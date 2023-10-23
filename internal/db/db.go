@@ -4,21 +4,17 @@ import (
 	"context"
 	"strconv"
 	"strings"
+
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 func NewPool(ctx context.Context) (*pgxpool.Pool, error) {
-	poolConf, err := pgxpool.ParseConfig(getConnectionString(cfg))
+	poolConf, err := pgxpool.ParseConfig(getConnectionString())
 	if err != nil {
 		return nil, err
 	}
 
-	poolConf.MaxConnLifetime = cfg.ConnMaxLifetime
-	poolConf.MaxConns = cfg.MaxOpenConns
-	if cfg.PreferSimpleProtocol {
-		poolConf.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
-	}
-
-	pool, err := pgxpool.NewWithConfig(ctx, poolConf)
+	pool, err := pgxpool.ConnectConfig(ctx, poolConf)
 	if err != nil {
 		return nil, err
 	}
@@ -31,22 +27,22 @@ func NewPool(ctx context.Context) (*pgxpool.Pool, error) {
 	return pool, nil
 }
 
-func getConnectionString(cfg config.DBConfig) string {
+func getConnectionString() string {
 	var builder strings.Builder
 
 	builder.WriteString("sslmode=disable")
 	builder.WriteString(" dbname=")
-	builder.WriteString(cfg.Database)
+	builder.WriteString("admin")
 	builder.WriteString(" user=")
-	builder.WriteString(cfg.Login)
+	builder.WriteString("admin")
 	builder.WriteString(" password=")
-	builder.WriteString(cfg.Password)
+	builder.WriteString("admin")
 	builder.WriteString(" host=")
-	builder.WriteString(cfg.Host.Name)
+	builder.WriteString("51.250.105.228")
 	builder.WriteString(" port=")
-	builder.WriteString(strconv.Itoa(cfg.Host.Port))
+	builder.WriteString(strconv.Itoa(5432))
 	builder.WriteString(" connect_timeout=")
-	builder.WriteString(strconv.FormatUint(cfg.ConnectTimeout, 10))
+	builder.WriteString(strconv.FormatUint(10, 10))
 
 	return builder.String()
 }
