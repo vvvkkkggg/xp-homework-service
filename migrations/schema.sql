@@ -25,7 +25,7 @@ create table if not exists assignments
     user_id int,
     status  int,
     feedback text,
-    file    text,
+    file    text
 );
 
 --goose down
