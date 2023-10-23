@@ -52,6 +52,7 @@ func (s *Application) Home(ctx context.Context, userID int) (*template.Template,
 			&task.Name,
 			&task.Description,
 		); err != nil {
+			log.Print("unable to retrieve data from query")
 			return nil, nil, err
 		}
 
@@ -84,14 +85,14 @@ func (s *Application) Home(ctx context.Context, userID int) (*template.Template,
 		userTask := model.UserTask{
 			TaskInfo: task,
 			Status:   taskToStatus[task.TaskID],
+			UserID:   userID,
 		}
 		userTasks = append(userTasks, userTask)
 	}
 
-	tmpl, err := template.New("").ParseFiles("internal/templates/home.html", "internal/templates/base.html")
-	if err != nil {
-		log.Print("smth went wrong")
-	}
+	homeDir := "/Users/r.gostilo/Projects/hse/se/xp-homework-service/internal/templates/home.html"
+	//baseDir := "/Users/r.gostilo/Projects/hse/se/xp-homework-service/internal/templates/base.html"
+	tmpl := template.Must(template.ParseFiles(homeDir))
 
 	return tmpl, &model.HomePage{
 		UserInfo: user,

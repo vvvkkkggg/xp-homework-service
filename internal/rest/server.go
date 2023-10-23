@@ -14,6 +14,8 @@ func CreateAndServe(ctx context.Context, router *Router) error {
 		Handler: router,
 	}
 
+	log.Println("server is about to start")
+
 	if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatal("unable to serve http")
 	}

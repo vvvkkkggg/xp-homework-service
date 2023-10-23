@@ -1,4 +1,4 @@
-package xp_homework_service
+package main
 
 import (
 	"github.com/vvvkkkggg/xp-homework-service/cmd"

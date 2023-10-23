@@ -10,7 +10,7 @@ type User struct {
 type Task struct {
 	TaskID      int
 	GroupID     int
-	Name        int
+	Name        string
 	Description string
 }
 
@@ -27,6 +27,7 @@ type Assignment struct {
 type UserTask struct {
 	TaskInfo Task
 	Status   int
+	UserID   int
 }
 
 type HomePage struct {

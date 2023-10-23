@@ -1,28 +1,74 @@
-{{define "content"}}
-<div>
-  <h1>Привет, {{ .UserInfo.Name }}!</h1>
-  <h3>Ваша группа {{ .UserInfo.GroupID }}.</h3>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  .task_box {
+    width: 200px;
+    background: grey;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+  }
+
+  .submit_button {
+    border: 0;
+    background: #4676D7;
+    color: #fff;
+    padding: 5px 0px;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .submit_button:hover {
+    background: #1d49aa;
+  }
+
+  /*.submit_button:focus {*/
+  /*  outline: none;*/
+  /*  box-shadow: 0 0 0 0px #cbd6ee;*/
+  /*}*/
+</style>
+<body>
 <div>
   <div>
-    <h4>
-      {{if .UserInfo.Role}}
-      Задачи для проверки:
-      {{else}}
-      Ваши текущие задачи:
-      {{end}}
-    </h4>
+    <h1>Привет, {{ .UserInfo.Name }}!</h1>
+    <h3>Ваша группа {{ .UserInfo.GroupID }}.</h3>
   </div>
   <div>
-    {{range $key, $value := .Tasks}}
-    <div class="task_box">
-      <p>{{ $value.TaskInfo.Name }}</p>
-      <p>{{ $value.TaskInfo.Description }}</p>
-      <form action="/{{ .UserInfo.UserID }}/tasks/{{ $value.TaskInfo.TaskID }}" method="GET">
-        <input type="button" class="submit_button" value="Открыть задачу">
-      </form>
+    <div>
+      <h4>
+        {{if .UserInfo.Role}}
+        Задачи для проверки:
+        {{else}}
+        Ваши текущие задачи:
+        {{end}}
+      </h4>
     </div>
-    {{end}}
+    <div>
+      {{range $key, $value := .Tasks}}
+      <div class="task_box">
+        <p>{{ $value.TaskInfo.Name }}</p>
+        <p>{{ $value.TaskInfo.Description }}</p>
+        <form action="/{{ $value.UserID }}/tasks/{{ $value.TaskInfo.TaskID }}" method="GET">
+          <input type="button" class="submit_button" value="Открыть задачу">
+        </form>
+      </div>
+      {{end}}
+    </div>
   </div>
 </div>
+<<<<<<< Updated upstream
 {{end}}
+=======
+
+</body>
+</html>
+>>>>>>> Stashed changes

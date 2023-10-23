@@ -23,6 +23,8 @@ func NewHandler(app *application.Application) *Handler {
 func (h *Handler) home(ctx *gin.Context) {
 	userID := ctx.Param("user")
 
+	log.Println("home request")
+
 	id, err := strconv.Atoi(userID)
 	if err != nil {
 		log.Print("incorrect id")
@@ -33,9 +35,10 @@ func (h *Handler) home(ctx *gin.Context) {
 		return
 	}
 
-	err = tmpl.Execute(ctx.Writer, home)
+	err = tmpl.Execute(ctx.Writer, *home)
 	if err != nil {
-		log.Print("unable to render page")
+		log.Println("unable to render page")
+		log.Println(err.Error())
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 	}
 
