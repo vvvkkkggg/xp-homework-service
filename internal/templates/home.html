@@ -58,7 +58,7 @@
         <p>{{ $value.TaskInfo.Name }}</p>
         <p>{{ $value.TaskInfo.Description }}</p>
         <form action="/{{ $value.UserID }}/tasks/{{ $value.TaskInfo.TaskID }}" method="GET">
-          <input type="button" class="submit_button" value="Открыть задачу">
+          <button type="submit" class="submit_button">Открыть задачу</button>
         </form>
       </div>
       {{end}}

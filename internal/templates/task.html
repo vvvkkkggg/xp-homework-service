@@ -71,11 +71,10 @@
       <form class="send_form" action="/{{ .UserInfo.UserID }}/tasks/{{ .TaskInfo.TaskID }}" method="post">
         {{ if .UserInfo.Role }}
         <textarea>{{ .Assignment.Feedback}}</textarea>
-        <input type="submit" value="Отправить">
         {{ else }}
         <textarea>{{ .Assignment.File }}</textarea>
-        <input type="submit" value="Отправить">
         {{ end }}
+        <button type="submit">Отправить</button>
       </form>
     </div>
   </div>
