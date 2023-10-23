@@ -15,7 +15,7 @@ func NewRouter(h *Handler) *Router {
 	}
 
 	r.GET("/:user/home", h.home)
-	r.GET("/:user/tasks/:task", h.task)
+	//r.GET("/:user/tasks/:task", h.task)
 	//r.POST("/:user/tasks/:task", h.submit)
 
 	/*

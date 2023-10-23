@@ -10,7 +10,7 @@ import (
 	"github.com/vvvkkkggg/xp-homework-service/internal/rest"
 )
 
-func main() {
+func Run() {
 	ctx, _ := context.WithCancel(context.Background())
 	pool, err := db.NewPool(ctx)
 	if err != nil {
@@ -20,6 +20,10 @@ func main() {
 	app := application.New(pool)
 
 	router := rest.NewRouter(rest.NewHandler(app))
+
+	if err = rest.CreateAndServe(ctx, router); err != nil {
+		log.Fatal("unable to run server")
+	}
 
 }
 

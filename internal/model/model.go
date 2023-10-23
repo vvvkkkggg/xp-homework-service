@@ -10,8 +10,8 @@ type User struct {
 type Task struct {
 	TaskID      int
 	GroupID     int
-	name        int
-	description string
+	Name        int
+	Description string
 }
 
 type Assignment struct {

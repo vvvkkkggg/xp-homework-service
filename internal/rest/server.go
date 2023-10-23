@@ -6,11 +6,9 @@ import (
 	"log"
 	"net"
 	"net/http"
-
-	"github.com/vvvkkkggg/xp-homework-service/internal/application"
 )
 
-func CreateAndServe(ctx context.Context, app *application.Application, router *Router) error {
+func CreateAndServe(ctx context.Context, router *Router) error {
 	server := &http.Server{
 		Addr:    net.JoinHostPort("0.0.0.0", "80"),
 		Handler: router,

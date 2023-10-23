@@ -1,7 +1,9 @@
 package rest
 
 import (
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -19,33 +21,28 @@ func NewHandler(app *application.Application) *Handler {
 }
 
 func (h *Handler) home(ctx *gin.Context) {
-	/*
-		name := c.Param("name")
-				c.String(http.StatusOK, "Hello %s", name)
-	*/
-
 	userID := ctx.Param("user")
 
-	resp, err := h.app.Home(ctx.Request.Context(), userID)
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		log.Print("incorrect id")
+	}
+	tmpl, home, err := h.app.Home(ctx.Request.Context(), id)
 	if err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, resp)
-
-	err = tmpl.ExecuteTemplate(w, "base", yourContext)
-
+	err = tmpl.Execute(ctx.Writer, home)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		log.Print("unable to render page")
+		ctx.AbortWithStatus(http.StatusInternalServerError)
 	}
 
-	if err := tmpl.Execute(w, book); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	ctx.Status(http.StatusOK)
 }
 
+/*
 func (h *Handler) task(ctx *gin.Context) {
 	userID := ctx.Param("user")
 	taskID := ctx.Param("task")
@@ -60,6 +57,8 @@ func (h *Handler) task(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, resp)
 }
+
+*/
 
 //func (h *Handler) submit(ctx *gin.Context) {
 //
