@@ -1,3 +1,4 @@
+{{define "base"}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,27 +39,9 @@
 </style>
 <body>
 <div>
-  <div>
-    <h1>Привет, студент!</h1>
-    <h3>Ваша группа 123.</h3>
-  </div>
-  <div>
-    <div>
-      <h4>
-        Ваши текущие задачи:
-      </h4>
-    </div>
-    <div>
-      <div class="task_box">
-        <p>Название задачи</p>
-        <p>Описание задачи</p>
-        <form action="/user_id/tasks/task_id" method="GET">
-          <input type="button" class="submit_button" value="Открыть задачу">
-        </form>
-      </div>
-    </div>
-  </div>
+  {{template "content" .}}
 </div>
 
 </body>
 </html>
+{{end}}
