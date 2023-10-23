@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  .task_box {
+    width: 200px;
+    background: grey;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+  }
+
+  .submit_button {
+    border: 0;
+    background: #4676D7;
+    color: #fff;
+    padding: 5px 0px;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .submit_button:hover {
+    background: #1d49aa;
+  }
+
+  /*.submit_button:focus {*/
+  /*  outline: none;*/
+  /*  box-shadow: 0 0 0 0px #cbd6ee;*/
+  /*}*/
+</style>
+<body>
+<div>
+  <div>
+    <h1>Привет, студент!</h1>
+    <h3>Ваша группа 123.</h3>
+  </div>
+  <div>
+    <div>
+      <h4>
+        Ваши текущие задачи:
+      </h4>
+    </div>
+    <div>
+      <div class="task_box">
+        <p>Название задачи</p>
+        <p>Описание задачи</p>
+        <form action="/user_id/tasks/task_id" method="GET">
+          <input type="button" class="submit_button" value="Открыть задачу">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
