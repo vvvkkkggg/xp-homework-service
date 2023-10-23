@@ -1,0 +1,42 @@
+{{ define "content" }}
+<div>
+  <h1>Привет, {{ .UserInfo.Name }}!</h1>
+  <h3>Ваша группа {{ .UserInfo.GroupID }}.</h3>
+</div>
+<div>
+  <div>
+    <p>Название задачи: {{ .TaskInfo.Name }}</p>
+    <p>Описание задачи: {{ .TaskInfo.Description }}</p>
+  </div>
+  <div>
+    {{ if .UserInfo.Role }}
+      {{ if .AssignmentInfo.File }}
+      <p>Решение студента: {{ .AssignmentInfo.File }}</p>
+      {{ else }}
+      <p>Студент ещё не прислал решение</p>
+      {{ end }}
+    {{ else }}
+      {{ if .AssignmentInfo.Feedback }}
+      <p>Ответ от преподавателя: {{ .AssignmentInfo.Feedback }}</p>
+      {{ else }}
+      <p>Преподаватель ещё не проверил решение</p>
+      {{ end }}
+    {{ end }}
+  </div>
+  <div>
+    {{ if .UserInfo.Role }}
+    <p>Оставьте ревью:</p>
+    {{ else }}
+    <p>Оставьте решение:</p>
+    {{ end }}
+    <form class="send_form" action="/{{ .UserInfo.UserID }}/tasks/{{ .TaskInfo.TaskID }}" method="post">
+      {{ if .UserInfo.Role }}
+      <textarea>{{ .Assignment.Feedback}}</textarea>
+      {{ else }}
+      <textarea>{{ .Assignment.File }}</textarea>
+      {{ end }}
+      <input type="submit" value="Отправить">
+    </form>
+  </div>
+</div>
+{{ end }}
