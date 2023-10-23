@@ -100,8 +100,63 @@ func (s *Application) Home(ctx context.Context, userID int) (*template.Template,
 	}, nil
 }
 
-func (s *Application) Task(ctx context.Context, user int, task int) (*template.Template, error) {
-	return nil, nil
+/*
+create table if not exists tasks
+(
+    task_id     SERIAL PRIMARY KEY,
+    group_id    int,
+    name        varchar(50),
+    description varchar(500)
+);
+*/
+
+func (s *Application) Task(ctx context.Context, userID int, taskID int) (*template.Template, *model.AssignmentPage, error) {
+	var user model.User
+	query := `SELECT user_id, role, group_id, name FROM users WHERE user_id = $1`
+	row := s.db.QueryRow(ctx, query, strconv.Itoa(userID))
+	if err := row.Scan(
+		&user.UserID,
+		&user.Role,
+		&user.GroupID,
+		&user.Name,
+	); err != nil {
+		return nil, nil, err
+	}
+
+	var task model.Task
+	query = `SELECT task_id, group_id, name, description FROM tasks WHERE task_id = $1`
+	row = s.db.QueryRow(ctx, query, strconv.Itoa(taskID))
+	if err := row.Scan(
+		&task.TaskID,
+		&task.GroupID,
+		&task.Name,
+		&task.Description,
+	); err != nil {
+		return nil, nil, err
+	}
+
+	// retrieving statuses
+	var assignment model.Assignment
+	query = `SELECT task_id, user_id, status, feedback, file FROM assignments WHERE user_id = $1 AND task_id = $2`
+	row = s.db.QueryRow(ctx, query, strconv.Itoa(userID), strconv.Itoa(taskID))
+	if err := row.Scan(
+		&assignment.TaskID,
+		&assignment.UserID,
+		&assignment.Status,
+		&assignment.Feedback,
+		&assignment.File,
+	); err != nil {
+		return nil, nil, err
+	}
+
+	taskDir := "/Users/r.gostilo/Projects/hse/se/xp-homework-service/internal/templates/task.html"
+	tmpl := template.Must(template.ParseFiles(taskDir))
+
+	return tmpl, &model.AssignmentPage{
+		UserInfo:       user,
+		TaskInfo:       task,
+		AssignmentInfo: assignment,
+	}, nil
 }
 
 //func (s *Application) Submit(ctx context.Context, ) error {

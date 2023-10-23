@@ -45,23 +45,35 @@ func (h *Handler) home(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
-/*
 func (h *Handler) task(ctx *gin.Context) {
 	userID := ctx.Param("user")
 	taskID := ctx.Param("task")
 
-	resp, err := h.app.Task(ctx.Request.Context(), req)
+	log.Println("task request")
+
+	userIDInt, err := strconv.Atoi(userID)
 	if err != nil {
-		log.Error("unable to process request")
-		ctx.Error(err)
+		log.Print("incorrect id")
+	}
+	taskIDInt, err := strconv.Atoi(taskID)
+	if err != nil {
+		log.Print("incorrect id")
+	}
+	tmpl, task, err := h.app.Task(ctx.Request.Context(), userIDInt, taskIDInt)
+	if err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, resp)
-}
+	err = tmpl.Execute(ctx.Writer, *task)
+	if err != nil {
+		log.Println("unable to render page")
+		log.Println(err.Error())
+		ctx.AbortWithStatus(http.StatusInternalServerError)
+	}
 
-*/
+	ctx.Status(http.StatusOK)
+}
 
 //func (h *Handler) submit(ctx *gin.Context) {
 //
