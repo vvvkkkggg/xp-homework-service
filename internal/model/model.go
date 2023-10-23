@@ -23,7 +23,6 @@ type Assignment struct {
 	Feedback     string
 }
 
-// Выводим на главной странице
 type UserTask struct {
 	TaskInfo Task
 	Status   int
@@ -35,12 +34,8 @@ type HomePage struct {
 	Tasks    []UserTask
 }
 
-// ----------------------------
-// Выводим на странице задачи
-type UserAssignment struct {
-  UserInfo       Userk
+type AssignmentPage struct {
+	UserInfo       User
 	TaskInfo       Task
-AssignmentInfo Assignment
+	AssignmentInfo Assignment
 }
-
-// ----------------------------
