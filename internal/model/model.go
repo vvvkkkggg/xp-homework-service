@@ -38,8 +38,9 @@ type HomePage struct {
 // ----------------------------
 // Выводим на странице задачи
 type UserAssignment struct {
+  UserInfo       Userk
 	TaskInfo       Task
-	AssignmentInfo Assignment
+AssignmentInfo Assignment
 }
 
 // ----------------------------

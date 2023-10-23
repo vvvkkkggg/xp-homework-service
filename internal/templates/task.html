@@ -1,42 +1,83 @@
-{{ define "content" }}
-<div>
-  <h1>Привет, {{ .UserInfo.Name }}!</h1>
-  <h3>Ваша группа {{ .UserInfo.GroupID }}.</h3>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>title</title>
+</head>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  .task_box {
+    width: 200px;
+    background: grey;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+  }
+
+  .submit_button {
+    border: 0;
+    background: #4676D7;
+    color: #fff;
+    padding: 5px 0px;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .submit_button:hover {
+    background: #1d49aa;
+  }
+
+  /*.submit_button:focus {*/
+  /*  outline: none;*/
+  /*  box-shadow: 0 0 0 0px #cbd6ee;*/
+  /*}*/
+</style>
+<body>
 <div>
   <div>
-    <p>Название задачи: {{ .TaskInfo.Name }}</p>
-    <p>Описание задачи: {{ .TaskInfo.Description }}</p>
+    <h1>Привет, {{ .UserInfo.Name }}!</h1>
+    <h3>Ваша группа {{ .UserInfo.GroupID }}.</h3>
   </div>
   <div>
-    {{ if .UserInfo.Role }}
-      {{ if .AssignmentInfo.File }}
-      <p>Решение студента: {{ .AssignmentInfo.File }}</p>
-      {{ else }}
-      <p>Студент ещё не прислал решение</p>
-      {{ end }}
-    {{ else }}
-      {{ if .AssignmentInfo.Feedback }}
-      <p>Ответ от преподавателя: {{ .AssignmentInfo.Feedback }}</p>
-      {{ else }}
-      <p>Преподаватель ещё не проверил решение</p>
-      {{ end }}
-    {{ end }}
-  </div>
-  <div>
-    {{ if .UserInfo.Role }}
-    <p>Оставьте ревью:</p>
-    {{ else }}
-    <p>Оставьте решение:</p>
-    {{ end }}
-    <form class="send_form" action="/{{ .UserInfo.UserID }}/tasks/{{ .TaskInfo.TaskID }}" method="post">
+    <div>
+      <p>Название задачи: {{ .TaskInfo.Name }}</p>
+      <p>Описание задачи: {{ .TaskInfo.Description }}</p>
+    </div>
+    <div>
       {{ if .UserInfo.Role }}
-      <textarea>{{ .Assignment.Feedback}}</textarea>
+        {{ if .AssignmentInfo.File }}
+        <p>Решение студента: {{ .AssignmentInfo.File }}</p>
+        {{ else }}
+        <p>Студент ещё не прислал решение</p>
+        {{ end }}
       {{ else }}
-      <textarea>{{ .Assignment.File }}</textarea>
+        {{ if .AssignmentInfo.Feedback }}
+        <p>Ответ от преподавателя: {{ .AssignmentInfo.Feedback }}</p>
+        {{ else }}
+        <p>Преподаватель ещё не проверил решение</p>
+        {{ end }}
       {{ end }}
-      <input type="submit" value="Отправить">
-    </form>
+    </div>
+    <div>
+      {{ if .UserInfo.Role }}
+      <p>Оставьте ревью:</p>
+      {{ else }}
+      <p>Оставьте решение:</p>
+      {{ end }}
+      <form class="send_form" action="/{{ .UserInfo.UserID }}/tasks/{{ .TaskInfo.TaskID }}" method="post">
+        {{ if .UserInfo.Role }}
+        <textarea>{{ .Assignment.Feedback}}</textarea>
+        {{ else }}
+        <textarea>{{ .Assignment.File }}</textarea>
+        {{ end }}
+        <input type="submit" value="Отправить">
+      </form>
+    </div>
   </div>
 </div>
-{{ end }}
+</body>
+</html>
