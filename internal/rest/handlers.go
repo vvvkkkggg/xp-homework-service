@@ -33,6 +33,17 @@ func (h *Handler) home(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, resp)
+
+	err = tmpl.ExecuteTemplate(w, "base", yourContext)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := tmpl.Execute(w, book); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func (h *Handler) task(ctx *gin.Context) {

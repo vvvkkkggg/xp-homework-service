@@ -3,10 +3,12 @@ package application
 import (
 	"context"
 	"html/template"
-	"net/http"
-	"path"
+	"log"
+	"strconv"
 
 	"github.com/jackc/pgx/v4/pgxpool"
+
+	"github.com/vvvkkkggg/xp-homework-service/internal/model"
 )
 
 type Application struct {
@@ -19,29 +21,49 @@ func New(db *pgxpool.Pool) *Application {
 	}
 }
 
-type Task struct {
-	Title  string
-	Author string
-}
-
 /*
 home.html
 task.html
 */
-func (s *Application) Home(ctx context.Context, user int) (*template.Template, error) {
-	task := Task{"Building Web Apps with Go", "Jeremy Saenz"}
+func (s *Application) Home(ctx context.Context, userID int) (*template.Template, model.Info, error) {
+	query := `SELECT role, group_id, name FROM users where user_id = $1`
+	user := model.User{}
+	row := s.db.QueryRow(ctx, query, strconv.Itoa(userID))
+	user.UserID = userID
+	if err := row.Scan(
+		&user.Role,
+		&user.GroupID,
+		&user.Name,
+	); err != nil {
+		return nil, err
+	}
 
-	fp := path.Join("templates", "home.html")
-	tmpl, err := template.ParseFiles(fp)
+	tasks := make([]model.Task, 0, 20)
+	query = `SELECT task_id, name, description FROM tasks WHERE group_id = $1`
+	rows, err := s.db.Query(ctx, query, strconv.Itoa(user.GroupID))
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		log.Print("cannot retrieve tasks")
+	}
+	for rows.Next() {
+		var task model.Task
+		task.GroupID = user.GroupID
+		if err := rows.Scan(
+			&task.TaskID,
+			&task.Name,
+			&task.Description,
+		); err != nil {
+			return nil, err
+		}
+
+		tasks = append(tasks, task)
 	}
 
-	if err := tmpl.Execute(w, book); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	tmpl, err := template.New("").ParseFiles("internal/templates/home.html", "internal/templates/base.html")
+	if err != nil {
+		log.Print("smth went wrong")
 	}
-	return nil
+
+	return tmpl, nil
 }
 
 func (s *Application) Task(ctx context.Context, user int, task int) (*template.Template, error) {

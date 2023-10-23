@@ -19,5 +19,26 @@ type Assignment struct {
 	TaskID       int
 	UserID       int
 	Status       int
+	File         string
 	Feedback     string
 }
+
+// Выводим на главной странице
+type UserTask struct {
+	TaskInfo Task
+	Status   int
+}
+
+type HomePage struct {
+	UserInfo User
+	Tasks    []UserTask
+}
+
+// ----------------------------
+// Выводим на странице задачи
+type UserAssignment struct {
+	TaskInfo       Task
+	AssignmentInfo Assignment
+}
+
+// ----------------------------
