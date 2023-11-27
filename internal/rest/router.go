@@ -14,8 +14,8 @@ func NewRouter(h *Handler) *Router {
 		Engine: gin.New(),
 	}
 
-	r.GET("/:user/home", h.home)
-	r.GET("/:user/tasks/:task", h.task)
+	r.GET("/:user/home", h.Home)
+	r.GET("/:user/tasks/:task", h.Task)
 	//r.POST("/:user/tasks/:task", h.submit)	todo: submit
 
 	return r

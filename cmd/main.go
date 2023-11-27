@@ -24,5 +24,4 @@ func Run() {
 	if err = rest.CreateAndServe(ctx, router); err != nil {
 		log.Fatal("unable to run server")
 	}
-
 }

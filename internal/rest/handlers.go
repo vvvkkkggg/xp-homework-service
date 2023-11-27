@@ -20,7 +20,7 @@ func NewHandler(app *application.Application) *Handler {
 	}
 }
 
-func (h *Handler) home(ctx *gin.Context) {
+func (h *Handler) Home(ctx *gin.Context) {
 	userID := ctx.Param("user")
 
 	log.Println("home request")
@@ -45,7 +45,7 @@ func (h *Handler) home(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
-func (h *Handler) task(ctx *gin.Context) {
+func (h *Handler) Task(ctx *gin.Context) {
 	userID := ctx.Param("user")
 	taskID := ctx.Param("task")
 

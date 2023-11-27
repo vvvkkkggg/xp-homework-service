@@ -6,25 +6,28 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/jackc/pgconn"
+	"github.com/jackc/pgx/v4"
 
 	"github.com/vvvkkkggg/xp-homework-service/internal/model"
 )
 
+type dbconn interface {
+	Begin(ctx context.Context) (pgx.Tx, error)
+	Exec(ctx context.Context, sql string, arguments ...interface{}) (pgconn.CommandTag, error)
+	Query(ctx context.Context, sql string, optionsAndArgs ...interface{}) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, optionsAndArgs ...interface{}) pgx.Row
+}
 type Application struct {
-	db *pgxpool.Pool
+	db dbconn
 }
 
-func New(db *pgxpool.Pool) *Application {
+func New(db dbconn) *Application {
 	return &Application{
 		db: db,
 	}
 }
 
-/*
-home.html
-task.html
-*/
 func (s *Application) Home(ctx context.Context, userID int) (*template.Template, *model.HomePage, error) {
 	query := `SELECT role, group_id, name FROM users where user_id = $1`
 	user := model.User{}
@@ -99,16 +102,6 @@ func (s *Application) Home(ctx context.Context, userID int) (*template.Template,
 		Tasks:    userTasks,
 	}, nil
 }
-
-/*
-create table if not exists tasks
-(
-    task_id     SERIAL PRIMARY KEY,
-    group_id    int,
-    name        varchar(50),
-    description varchar(500)
-);
-*/
 
 func (s *Application) Task(ctx context.Context, userID int, taskID int) (*template.Template, *model.AssignmentPage, error) {
 	var user model.User
