@@ -16,8 +16,6 @@ create table if not exists tasks
     description varchar(500)
 );
 
-
-
 create table if not exists assignments
 (
     assignment_id SERIAL PRIMARY KEY,

@@ -75,6 +75,5 @@ func (h *Handler) Task(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
-// todo: submit
 //func (h *Handler) submit(ctx *gin.Context) {
 //}
