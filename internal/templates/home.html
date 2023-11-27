@@ -2,47 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Задачи</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .user-info {
+      background-color: #4676D7;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .task-section {
+      margin-top: 20px;
+    }
+
+    .task-box {
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .task-box p {
+      margin-bottom: 10px;
+    }
+
+    .open-task-button {
+      background: #4676D7;
+      color: #fff;
+      padding: 8px 12px;
+      border: 0;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .open-task-button:hover {
+      background: #1d49aa;
+    }
+
+    /* Добавленные стили для различных статусов */
+    .status-0 {
+      background: #fff; /* Цвет для статуса "ещё не сдана" */
+      border: 1px solid #ddd;
+    }
+
+    .status-1 {
+      background: #ffc107; /* Цвет для статуса "на проверке" */
+      border: 1px solid #e0a800;
+    }
+
+    .status-2 {
+      background: #28a745; /* Цвет для статуса "проверена" */
+      border: 1px solid #218838;
+    }
+  </style>
 </head>
-<style>
-  * {
-    padding: 0;
-    margin: 0;
-  }
-
-  .task_box {
-    width: 200px;
-    background: grey;
-    display: flex;
-    flex-direction: column;
-    align-content: space-between;
-  }
-
-  .submit_button {
-    border: 0;
-    background: #4676D7;
-    color: #fff;
-    padding: 5px 0px;
-    font-size: 13px;
-    width: 100%;
-  }
-
-  .submit_button:hover {
-    background: #1d49aa;
-  }
-
-  /*.submit_button:focus {*/
-  /*  outline: none;*/
-  /*  box-shadow: 0 0 0 0px #cbd6ee;*/
-  /*}*/
-</style>
 <body>
-<div>
-  <div>
+<div class="container">
+  <div class="header">
     <h1>Привет, {{ .UserInfo.Name }}!</h1>
-    <h3>Ваша группа {{ .UserInfo.GroupID }}.</h3>
+    <h3 class="user-info">Ваша группа {{ .UserInfo.GroupID }}.</h3>
   </div>
-  <div>
+
+  <div class="task-section">
     <div>
       <h4>
         {{if .UserInfo.Role}}
@@ -52,17 +94,16 @@
         {{end}}
       </h4>
     </div>
-    <div>
-      {{range $key, $value := .Tasks}}
-      <div class="task_box">
-        <p>{{ $value.TaskInfo.Name }}</p>
-        <p>{{ $value.TaskInfo.Description }}</p>
-        <form action="/{{ $value.UserID }}/tasks/{{ $value.TaskInfo.TaskID }}" method="GET">
-          <button type="submit" class="submit_button">Открыть задачу</button>
-        </form>
-      </div>
-      {{end}}
+
+    {{range $key, $value := .Tasks}}
+    <div class="task-box status-{{ $value.Status }}">
+      <p><strong>{{ $value.TaskInfo.Name }}</strong></p>
+      <p>{{ $value.TaskInfo.Description }}</p>
+      <form action="/{{ $value.UserID }}/tasks/{{ $value.TaskInfo.TaskID }}" method="GET">
+        <button type="submit" class="open-task-button">Открыть задачу</button>
+      </form>
     </div>
+    {{end}}
   </div>
 </div>
 </body>
