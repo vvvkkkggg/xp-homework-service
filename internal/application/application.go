@@ -93,8 +93,8 @@ func (s *Application) Home(ctx context.Context, userID int) (*template.Template,
 		userTasks = append(userTasks, userTask)
 	}
 
-	homeDir := "/Users/r.gostilo/Projects/hse/se/xp-homework-service/internal/templates/home.html"
-	//baseDir := "/Users/r.gostilo/Projects/hse/se/xp-homework-service/internal/templates/base.html"
+	homeDir := "./internal/templates/home.html"
+	//baseDir := "./internal/templates/base.html"
 	tmpl := template.Must(template.ParseFiles(homeDir))
 
 	return tmpl, &model.HomePage{
